@@ -13,6 +13,11 @@
 #include <map>
 #include <memory>
 #include <sstream>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.System.Power.h>
+
+using namespace winrt;
+using namespace Windows::System::Power;
 
 namespace {
 
@@ -74,6 +79,24 @@ void WindowsEx_1Plugin::HandleMethodCall(
     }
     result->Success(flutter::EncodableValue(version_stream.str()));
   } else {
+    if(method_call.method_name().compare("getBatteryStatus"))
+    {
+      
+      auto hellMan = PowerManager{};
+      auto batStat = hellMan.BatteryStatus();
+      std::ostringstream power_stream;
+      if(batStat == BatteryStatus::Charging)
+      {
+        power_stream << "Charging...";
+      } else if(batStat == BatteryStatus::Discharging) {
+        power_stream << "Discharging...";  
+      } else if(batStat == BatteryStatus::Idle){
+        power_stream << "Battery Idle";
+      } else 
+        power_stream << "Absent";
+      result->Success(flutter::EncodableValue(power_stream.str()));    
+    }
+    else
     result->NotImplemented();
   }
 }
