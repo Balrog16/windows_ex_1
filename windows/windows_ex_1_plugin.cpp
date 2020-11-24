@@ -79,7 +79,7 @@ void WindowsEx_1Plugin::HandleMethodCall(
     }
     result->Success(flutter::EncodableValue(version_stream.str()));
   } else {
-    if(method_call.method_name().compare("getBatteryStatus"))
+    if(method_call.method_name().compare("getBatteryStatus") == 0)
     {
       
       auto hellMan = PowerManager{};
